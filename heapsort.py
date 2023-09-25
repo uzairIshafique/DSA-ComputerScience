@@ -1,45 +1,55 @@
-def swap(arr, i, j):
-    arr[i], arr[j] = arr[j], arr[i]
+def max_heap(arr: list, i: int, n: int):
+    """
+    Take as input an array and return a list sorted using heap sort.
 
+    :param n:   The length of the array
+    :param i:   The index of the value to check
+    :param arr: The array to be sorted
+    """
 
-def sift_down(arr, i, upper):
     while True:
-        l, r = i * 2 + 1, i * 2 + 2
+        left = i*2+1   # left child of the node
+        right = i*2+2  # right child of the node
 
-        if max(l, r) < upper:
-            if arr[i] >= max(arr[l], arr[r]):
+        if max(left, right) < n:
+            if max(arr[left], arr[right]) < arr[i]:
                 break
-            elif arr[l] > arr[r]:
-                swap(arr, i, l)
-                i = l
+            elif arr[left] > arr[right]:
+                arr[i], arr[left] = arr[left], arr[i]
+                i = left
             else:
-                swap(arr, i, r)
-                i = r
-        elif l < upper:
-            if arr[l] > arr[i]:
-                swap(arr, i, l)
-                i = l
+                arr[i], arr[right] = arr[right], arr[i]
+                i = right
+        elif left < n:
+            if arr[left] > arr[i]:
+                arr[i], arr[left] = arr[left], arr[i]
+                i = left
             else:
                 break
-        elif r < upper:
-            if arr[r] > arr[i]:
-                swap(arr, i, r)
-                i = r
+        elif right < n:
+            if arr[right] > arr[i]:
+                arr[i], arr[right] = arr[right], arr[i]
+                i = right
             else:
                 break
         else:
             break
 
 
-def heapsort(arr):
-    for j in range(len(arr) - 2 // 2, -1, -1):
-        sift_down(arr, j, len(arr))
+def heap_sort(arr: list):
+    """
+    The helper method used to call the max_heap() method.
 
-    for end in range(len(arr) - 1, 0, -1):
-        swap(arr, 0, end)
-        sift_down(arr, 0, end)
+    :param arr: The array to be passed to max_heap()
+    """
+    for i in range((len(arr) - 2) // 2, -1, -1):
+        max_heap(arr, i, len(arr))
+
+    for j in range((len(arr) - 1), 0, -1):
+        arr[j], arr[0] = arr[0], arr[j]
+        max_heap(arr, 0, j)
 
 
-arr_test = [5, 16, 8, 14, 20, 1, 26]
-heapsort(arr_test)
+arr_test = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
+heap_sort(arr_test)
 print(arr_test)
